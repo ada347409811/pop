@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="js/jQuery/jquery-3.2.1.js" type="text/javascript" charset="utf-8"></script>
+		<title>注册</title>
+		<style type="text/css">
+			body{
+				margin: 0;
+				padding: 0;
+			}
+			.header{
+				width: 100%;
+				height: 50px;
+				background-color: #000000;
+				color: lightgray;
+				display: flex;
+				justify-content: space-between;
+				line-height: 50px;
+			}
+			span{
+				margin: auto 10px;
+			}
+			form .Account{
+				text-align: center;
+			}
+			.Account input{
+				width: 95%;
+				padding: 8px;
+				margin: 10px;
+				border-radius: 5px;
+			}
+			.footer input[type=submit]{
+				width: 97%;
+				color: white;
+				background-color: mediumseagreen;
+			}
+			form .radios{
+				margin-left: 40px;
+				font-size: 14px;
+			}
+			.back{
+				cursor: pointer;
+			}
+			.jia{
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<div class="back">
+				<span>&lt;</span>
+			</div>
+			<span id="h3">
+				注册
+			</span>
+			<div class="jia">
+				<span>首页</span>
+			</div>
+		</div>
+		<form action="/register" method="post">
+			<div class="Account headers">
+				<input type="text" name="account" id="" value="" placeholder="请填写昵称"/>
+				<input type="text" name="pwd" id="" value="" placeholder="请填写密码"/>
+				<input type="text" name="tpwd" id="" value="" placeholder="请再次填写密码"/>
+			</div>			
+			<div class="radios">
+				<input type="radio" name="sex" id="" value="" />
+				<label for="">先生</label><br />
+				<input type="radio" name="sex" id="" value="" />
+				<label for="">女士</label>
+			</div>
+			<div class="Account footer">
+				<input type="text" id="" value="" placeholder="请填写邮箱"/>
+				<input type="tel" id="" value="" placeholder="Android"/>
+				<input type="submit" value="注册"/>
+			</div>		
+		</form>
+	</body>
+</html>
+<script src="js/register.js" type="text/javascript" charset="utf-8"></script>

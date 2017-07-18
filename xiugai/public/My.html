@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="js/jQuery/jquery-3.2.1.js" type="text/javascript" charset="utf-8"></script>
+		<title>个人资料</title>
+		<style type="text/css">
+			.header{
+				width: 100%;
+				height: 50px;
+				background-color: #000000;
+				color: lightgray;
+				display: flex;
+				justify-content: space-between;
+				line-height: 50px;
+			}
+			span{
+				margin: auto 10px;
+			}
+			form input[type=submit]{
+				width: 98%;
+				padding: 8px;
+				margin: 10px;
+				border-radius: 5px;
+				color: white;
+				background-color: mediumseagreen;
+			}
+			form input[type=button]{
+				margin: 10px;
+			}
+			.back{
+				cursor: pointer;
+			}
+			.jia{
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<div class="back">
+				<span>&lt;</span>
+			</div>
+			<span id="h3">
+				个人资料
+			</span>
+			<div class="jia">
+				<span>首页</span>
+			</div>
+		</div>
+		<form action="/My" method="post">
+			<input type="button" name="" id="" value="浏览..."/><label for="">未选择文件</label>
+			<input type="submit" value="上传头像"/>
+		</form>
+	</body>
+</html>
+<script src="js/My.js" type="text/javascript" charset="utf-8"></script>
