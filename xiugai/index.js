@@ -21,7 +21,9 @@ var storage = multer.diskStorage({
 });
 var upload = multer({storage});
 
-
+//处理文件上传和下载的post请求(特别是使用formdata数据当做参数传递到服务器的时候,引入multer框架)
+var multer = require('multer');
+var form = multer();
 
 // 创建服务器对象
 var app = express();
@@ -76,10 +78,11 @@ app.post('/register',function(req,res){
                             message:"写入文件操作失败！"
                         });
                     }else{
-                        res.status(200).json({
-                            code:'1',
-                            message:"注册成功！"
-                        });
+                        res.status(200).send(
+//                          code:'1',
+//                          message:"注册成功！",
+                            '注册成功'+"<script>setTimeout(function(){location.href = 'dlApp.html'},1000)</script>"
+                        );
                     }
                 }); 
             } 
@@ -112,10 +115,9 @@ app.post('/login',function(req,res){
                         expires.setMonth(expires.getMonth()+1);
                         res.cookie('petname',req.body.petname,{expires})
                         // 2 数据缓存完后 做登录成功提示
-                        res.status(200).json({
-                            code:"1",
-                            message:"登录成功！"
-                        });
+                        res.status(200).send(
+                        	'登录成功'+"<script>setTimeout(function(){location.href = 'index.html'},1000)</script>"
+                        );
                     }
                     else{
                         res.status(200).json({
@@ -196,6 +198,113 @@ app.post('/user/ask',function(req,res){
     }
 })
 
+/*******************4 提问*********************/
+
+app.post('/quiz',form.array(),function(req,res){
+	
+	console.log('留言信息'+ JSON.stringify(req.body));
+	console.log(req.body.uesrname);
+	console.log(req.body.content);
+	
+	//留言:留言内容 留言日期 留言者  留言者的ip
+	//将每一条数据保存到到对象上
+	var obj = {
+		content:req.body.content,
+		times :new Date(),
+//		username:req.body.uesrname,
+		userip:req.ip  //请求的ip
+	}
+	//先判断文件夹是否存在,如果不存在,系统会帮忙创建
+	fs.exists('saveData',function(exist){
+		if(!exist){
+			fs.mkdirSync('saveData');
+		}
+	});
+	
+	//在文件夹中添加一个新的文件,并保存数据
+	//参数1:数据保存的文件名
+	//参数2:存储的数据(字符串)
+	//参数3:函数
+	
+	//创建一个文件将所有留言信息全部保存到同一个文件中
+	fs.appendFile('saveData/message.txt',JSON.stringify(obj)+',',function(err){
+		if(err){
+			console.log('留言存储时出错.请稍等:' + err);
+		}
+		else{
+			console.log('留言成功');
+		}
+	})
+	
+//	返回给前端一个json对象
+//	res.send('谢谢留言');
+	res.send({
+		state:'success',
+		info:'谢谢留言'
+//		data:[
+//		{name:'kkkkk',
+//		age:23,
+//		sex:'男'},
+//		{
+//			name:'ol',
+//			age:45,
+//			sex:'女'
+//		},
+//		
+//		]
+	})
+	
+})
+
+ //get请求,将数据返回给前端
+ app.get('/msg',function(req,res){
+ 	
+ 	console.log('message');
+ 	//参数1:被判断的文件名
+   	//参数2:判断之后的处理函数
+ 	fs.exists('saveData/message.txt',function(exist){
+ 		if(exist){
+ 			//参数1:读取的文件名
+ 			//参数2:编码格式
+ 			//参数3:数据处理函数
+// 			(errors,data)=>  等同于 function(errors,data)
+ 			fs.readFile('saveData/message.txt','utf8',function(errors,data){
+// 				参数1:errors:读取失败返回的错误信息
+// 				参数2:data:读取成功,返回的数据
+            
+              if(!errors){
+              	if(data.length == 0){
+              		//访问成功,但是没有数据
+              		res.status(200).send('[]');
+              	}
+              	else{
+              		//有数据
+              		var result = '['+ data;
+              		result =  result.substr(0,result.length-1);
+              		result = result + ']';
+              		console.log(result);
+              		//访问成功,并且将数据一并返回
+              		res.status(200).send(result);
+              		
+              	}
+              	
+              }
+              else{
+              	//读取失败
+              	console.log('读取失败');
+              	res.status('404').send('[]');
+              }
+
+ 			})
+ 		}
+ 		else{
+ 			
+ 			console.log('文件不存在');
+ 			res.status('404').send('[]');
+ 		}
+ 	})
+	
+ })
 
 
 

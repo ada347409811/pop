@@ -4,6 +4,10 @@
 		<meta charset="UTF-8">
 		<title>首页</title>
 		<style type="text/css">
+			body{
+				margin: 0;
+				padding: 0;
+			}
 			.header{
 				width: 100%;
 				height: 50px;
@@ -62,6 +66,62 @@
 			</section>
 			<hr />
 		</div>		
+		<main></main>
 	</body>
+	<script src="js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function(){
+			//http://www.w3school.com.cn/ajax/ajax_xmlhttprequest_onreadystatechange.asp
+			if(xhr.readyState == 4 && xhr.status == 200){
+//				console.log(JSON.parse(xhr.responseText));
+				var ary = JSON.parse(xhr.responseText);
+				var ele = '';
+				for(var i = 0;i<ary.length;i++){
+					var msg = ary[i];
+					ele  += '<section>' ;
+					ele +='<div><strong>'+msg.username + '</strong></div>';
+					ele +='<p>'+msg.content+'</p>';
+		ele +='<p>'+timeFormat(msg.times)+'<span>'+formatIP(msg.userip) +'</span></p></section>';
+
+				}
+				
+				document.querySelector('main').innerHTML = ele;			
+			}
+		}
+		xhr.open('get','/msg');
+		xhr.send();
+		
+		function formatIP(userip){
+			if(userip.startsWith('::1')){
+				return 'localhost';
+			}
+			else{
+				return userip.substr(7);
+			}
+		}
+		
+		function timeFormat(times){
+//			var now = new Date();获取当前的时间
+			var t  = new Date(times);//根据给定的时间,创建对应的时间格式
+			var year = t.getFullYear();//年
+			var mouth = t.getMonth()+1;//月
+			var data = t.getDate();//日
+			var day = t.getDay();//星期几
+			var hour = t.getHours();//时
+			var minute = t.getMinutes();//分
+			var seconds = t.getSeconds();//秒
+			
+			mouth = mouth<10?'0'+mouth : mouth;
+			data = data<10?'0'+data : data;
+			hour = hour<10?'0'+hour : hour;
+			minute = minute<10?'0'+minute : minute;
+			seconds = seconds<10?'0'+seconds : seconds;
+			
+			
+			return year +'-'+mouth +'-'+data + '-'+ day + ' '+ hour+':'+minute+':'+seconds;
+			
+			
+		}
+	</script>
 </html>
-<script src="js/index.js" type="text/javascript" charset="utf-8"></script>
